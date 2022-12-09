@@ -1,0 +1,38 @@
+version: '3.9'
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    networks:
+      - kafka_network
+    ports:
+      - 2181:2181
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    hostname: kafkahost
+    networks:
+      - kafka_network
+    depends_on:
+      - zookeeper
+    ports:
+      - "29092:29092"
+    expose:
+      - "9093"
+      - "9094"
+      - "9095"
+      - "9096"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: INTERNAL://:9092,CHAT://:9093,NOTIFICATION://:9094,COURSE://:9095,USER://:9096,EXTERNAL_SAME_HOST://:29092,
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,CHAT://kafka:9093,NOTIFICATION://kafka:9094,COURSE://kafka:9095,USER://kafka:9096,EXTERNAL_SAME_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,CHAT:PLAINTEXT,NOTIFICATION:PLAINTEXT,COURSE:PLAINTEXT,USER:PLAINTEXT,EXTERNAL_SAME_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+networks:
+  kafka_network:
+    name: kafka_docker_network

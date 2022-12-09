@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  chat-app:
+    container_name: chat-app
+    hostname: chatApp
+    environment:
+      SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9093
+    build:
+      context: "../../"
+      dockerfile: "apps/chat-app/Dockerfile"
+    ports:
+      - "8084:8084"
+    networks:
+      - kafka_docker_network
+networks:
+  kafka_docker_network:
+    external: true

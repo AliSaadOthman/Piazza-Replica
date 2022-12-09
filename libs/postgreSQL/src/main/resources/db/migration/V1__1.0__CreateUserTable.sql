@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS users(
+    email VARCHAR(100) PRIMARY KEY NOT NULL,
+    password VARCHAR (100) NOT NULL,
+    firstName VARCHAR(100)  NOT NULL,
+    lastName VARCHAR(100)  NOT NULL,
+    role VARCHAR(100),
+    token VARCHAR(100),
+    createdAt TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updatedAt TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+
+CREATE INDEX IF NOT EXISTS emailIndex ON users(email);

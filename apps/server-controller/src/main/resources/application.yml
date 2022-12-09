@@ -1,0 +1,31 @@
+server:
+  port : 8080
+
+spring :
+  kafka :
+    bootstrap-servers : localhost:29092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      retries: 3
+      acks: 1
+    consumer :
+      enable-auto-commit : false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
+
+kafka:
+  topics:
+    server:
+      name: server.reply
+      partitions: 6
+      replicas: 1
+  consumer:
+    group-id: server-group
+    concurrency: 6

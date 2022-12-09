@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  notifications-app:
+    container_name: notification-app
+    environment:
+      SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9094
+    build:
+      context: "../../"
+      dockerfile: "apps/notifications-app/Dockerfile"
+    restart: on-failure
+    ports:
+      - "8083:8083"
+    networks:
+      - kafka_docker_network
+networks:
+  kafka_docker_network:
+    external: true

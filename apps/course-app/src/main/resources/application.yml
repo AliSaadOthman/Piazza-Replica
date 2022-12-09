@@ -1,0 +1,42 @@
+server:
+  port : 8082
+
+spring :
+  kafka :
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      retries: 3
+      acks: 1
+    consumer :
+      enable-auto-commit : false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
+
+kafka:
+  topics:
+    course:
+      name: course.topic
+      partitions: 6
+      replicas: 1
+  consumer:
+    group-id: course.group
+    id: course.app
+    concurrency: 6
+
+  arangodb:
+    host: arangodb
+    port: 8529
+    user: root
+    maxConnections: 3000
+
+  minio:
+    url: minio:9000
+    accessKye: hyVNqge8gFUELj0t
+    secretKey: nfOGaowmOy6w61tUPQ3b760bog19C9Di

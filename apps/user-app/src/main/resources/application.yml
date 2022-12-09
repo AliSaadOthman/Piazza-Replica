@@ -1,0 +1,43 @@
+server:
+  port : 8081
+
+spring :
+  kafka :
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      retries: 3
+      acks: 1
+    consumer :
+      enable-auto-commit : false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
+
+kafka:
+  topics:
+    course:
+      name: user.topic
+      partitions: 6
+      replicas: 1
+  consumer:
+    group-id: user.group
+    id: user.app
+    concurrency: 6
+
+app:
+  datasource:
+    main:
+      driver-class-name: org.postgresql.Driver
+      jdbc-url: jdbc:postgresql://postgres:5432/piazza
+      username: postgres
+      password: 'postgres'
+      minimum-idle: 1000
+      maximum-pool: 2000
+      maximum-life-time: 12000000
+      timeout: 6000000
